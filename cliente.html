@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIFGA - Panel Cliente</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <button class="menu-toggle" onclick="window.toggleMobileMenu()" aria-label="Abrir menú de navegación">☰</button>
+        <div class="sidebar-overlay" onclick="window.toggleMobileMenu()" aria-hidden="true"></div>
+
+        <div class="dashboard-container">
+            <aside class="sidebar">
+                <div class="logo">
+                    <img src="assets/logo.png" alt="Logo SIFGA" class="sidebar-logo" onerror="this.style.display='none'">
+                    <h2>SIFGA</h2>
+                    <p>Cliente</p>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#" id="nav-dashboard">Mi Cuenta</a></li>
+                    <li><a href="#" id="nav-facturas">Mis Facturas</a></li>
+                    <li><a href="#" id="nav-pagar">Pagar Factura</a></li>
+                    <li><a href="#" id="nav-historial">Historial Consumo</a></li>
+                    <li><a href="#" id="nav-anticipos">Anticipos y Recaudos</a></li>
+                </ul>
+            </aside>
+
+            <main class="main-content">
+                <div class="top-bar">
+                    <h2 id="sectionTitle">Mi Cuenta</h2>
+                    <div class="user-info">
+                        <span class="role-badge">Cliente</span>
+                        <span id="userNameDisplay"></span>
+                        <button class="logout-btn" onclick="window.logout()">Cerrar Sesión</button>
+                    </div>
+                </div>
+
+                <!-- Dashboard / Mi Cuenta -->
+                <div id="dashboard" class="section-content">
+                    <div class="stats-grid">
+                        <div class="stat-card"><h3>Estado Actual</h3><div class="stat-value" id="estadoCliente">-</div></div>
+                        <div class="stat-card"><h3>Deuda Total</h3><div class="stat-value" id="deudaCliente">$0</div></div>
+                    </div>
+                    <div class="table-container">
+                        <h3>Información del Cliente</h3>
+                        <table id="tablaInfoCliente">
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Mis Facturas -->
+                <div id="facturas" class="section-content hide">
+                    <h3>Mis Facturas</h3>
+                    <div class="table-container">
+                        <table id="tablaFacturas">
+                            <thead>
+                                <tr><th>Factura</th><th>Periodo</th><th>Monto</th><th>Vencimiento</th><th>Estado</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Pagar Factura -->
+                <div id="pagar" class="section-content hide">
+                    <h3>Pagar Factura</h3>
+                    <div class="form-card">
+                        <div class="form-group">
+                            <label for="selectFacturaPagar">Seleccionar Factura</label>
+                            <select id="selectFacturaPagar" aria-label="Seleccionar factura para pagar" title="Seleccione una factura pendiente">
+                                <option value="">Seleccione una factura pendiente</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="metodoPagoCliente">Método de Pago</label>
+                            <select id="metodoPagoCliente" aria-label="Método de pago" title="Seleccione el método de pago">
+                                <option value="efectivo">Efectivo</option>
+                                <option value="tarjeta">Tarjeta Crédito/Débito</option>
+                                <option value="transferencia">Transferencia Bancaria</option>
+                            </select>
+                        </div>
+                        <button class="btn-primary" onclick="window.pagarFactura()">Pagar Factura</button>
+                        <div id="resultadoPago" class="alert-success hidden" role="status" aria-live="polite"></div>
+                    </div>
+                </div>
+
+                <!-- Historial de Consumo -->
+                <div id="historial" class="section-content hide">
+                    <h3>Historial de Consumo</h3>
+                    <div class="table-container">
+                        <table id="tablaHistorial">
+                            <thead>
+                                <tr><th>Periodo</th><th>Lectura (m3)</th><th>Consumo (m3)</th><th>Valor Pagado</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Anticipos y Recaudos -->
+                <div id="anticipos" class="section-content hide">
+                    <h3>Historial de Anticipos y Recaudos</h3>
+                    <div class="table-container">
+                        <table id="tablaAnticiposCliente">
+                            <thead>
+                                <tr><th>Fecha</th><th>Tipo</th><th>Monto</th><th>Referencia</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p>Creado by Programmer Ivan Rodríguez - Frontend - Derechos Reservados © 2026 SIFGA</p>
+            </div>
+        </footer>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+    <script type="module">
+        import { toggleMobileMenu, logout } from './js/utils.js';
+        import { inicializarCliente, showSection, pagarFactura } from './js/roles/cliente.js';
+        
+        window.toggleMobileMenu = toggleMobileMenu;
+        window.logout = logout;
+        window.showSection = showSection;
+        window.pagarFactura = pagarFactura;
+        
+        document.getElementById('nav-dashboard')?.addEventListener('click', (e) => { e.preventDefault(); showSection('dashboard'); });
+        document.getElementById('nav-facturas')?.addEventListener('click', (e) => { e.preventDefault(); showSection('facturas'); });
+        document.getElementById('nav-pagar')?.addEventListener('click', (e) => { e.preventDefault(); showSection('pagar'); });
+        document.getElementById('nav-historial')?.addEventListener('click', (e) => { e.preventDefault(); showSection('historial'); });
+        document.getElementById('nav-anticipos')?.addEventListener('click', (e) => { e.preventDefault(); showSection('anticipos'); });
+        
+        inicializarCliente();
+    </script>
+</body>
+</html>

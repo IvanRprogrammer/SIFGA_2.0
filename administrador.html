@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIFGA - Panel Administrador</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <button class="menu-toggle" onclick="window.toggleMobileMenu()" aria-label="Abrir menú de navegación">☰</button>
+        <div class="sidebar-overlay" onclick="window.toggleMobileMenu()" aria-hidden="true"></div>
+
+        <div class="dashboard-container">
+            <aside class="sidebar">
+                <div class="logo">
+                    <img src="assets/logo.png" alt="Logo SIFGA" class="sidebar-logo" onerror="this.style.display='none'">
+                    <h2>SIFGA</h2>
+                    <p>Administrador</p>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#" id="nav-dashboard">Dashboard</a></li>
+                    <li><a href="#" id="nav-gestionUsuarios">Usuarios</a></li>
+                    <li><a href="#" id="nav-aprobarClientes">Aprobar Clientes</a></li>
+                    <li class="nav-submenu">
+                        <a href="#" id="nav-configToggle">Configuraciones ▼</a>
+                        <ul class="submenu hide" id="configSubmenu">
+                            <li><a href="#" id="nav-ajusteTarifa">Ajuste de Tarifa General</a></li>
+                            <li><a href="#" id="nav-ajusteTarifaCliente">Ajuste de Tarifa por Cliente</a></li>
+                            <li><a href="#" id="nav-limpiezaDatos">Limpieza de Datos</a></li>
+                            <li><a href="#" id="nav-gestionPermisos">Gestión de Permisos</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#" id="nav-recaudos">Recaudos</a></li>
+                    <li><a href="#" id="nav-reportes">Reportes</a></li>
+                    <li><a href="#" id="nav-rutas">Rutas</a></li>
+                </ul>
+            </aside>
+
+            <main class="main-content">
+                <div class="top-bar">
+                    <h2 id="sectionTitle">Dashboard Principal</h2>
+                    <div class="user-info">
+                        <span class="role-badge">Administrador</span>
+                        <span id="userNameDisplay"></span>
+                        <button class="logout-btn" onclick="window.logout()">Cerrar Sesión</button>
+                    </div>
+                </div>
+
+                <!-- Dashboard -->
+                <div id="dashboard" class="section-content">
+                    <div class="stats-grid">
+                        <div class="stat-card"><h3>Total Ingresos</h3><div class="stat-value" id="totalIngresos">$0</div></div>
+                        <div class="stat-card"><h3>Usuarios Activos</h3><div class="stat-value" id="totalUsuarios">0</div></div>
+                        <div class="stat-card"><h3>Clientes</h3><div class="stat-value" id="totalClientes">0</div></div>
+                        <div class="stat-card"><h3>Propuestas Pendientes</h3><div class="stat-value" id="totalPropuestas">0</div></div>
+                    </div>
+                    <div class="table-container">
+                        <h3>Últimos Recaudos</h3>
+                        <table id="tablaUltimosRecaudos" class="data-table">
+                            <thead>
+                                <tr><th>Cliente</th><th>Municipio</th><th>Monto</th><th>Fecha</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Gestión de Usuarios -->
+                <div id="gestionUsuarios" class="section-content hide">
+                    <h3>Crear Nuevo Usuario</h3>
+                    <div class="form-card">
+                        <div class="form-row">
+                            <div class="form-group"><label for="newUserNombre">Nombre Completo</label><input type="text" id="newUserNombre" placeholder="Nombre completo"></div>
+                            <div class="form-group"><label for="newUserEmail">Email</label><input type="email" id="newUserEmail" placeholder="correo@empresa.com"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="newUserRol">Rol</label>
+                                <select id="newUserRol">
+                                    <option value="vendedor">Vendedor</option>
+                                    <option value="cliente">Cliente</option>
+                                </select>
+                            </div>
+                            <div class="form-group"><label for="newUserPassword">Contraseña</label><input type="text" id="newUserPassword" value="sifga2025"></div>
+                        </div>
+                        <button class="btn-primary" onclick="window.crearNuevoUsuario()">Crear Usuario</button>
+                        <div id="mensajeUsuario" class="alert-success hidden"></div>
+                    </div>
+                    <div class="table-container">
+                        <h4>Usuarios del Sistema</h4>
+                        <table id="tablaUsuarios" class="data-table">
+                            <thead>
+                                <tr><th>ID</th><th>Nombre</th><th>Email</th><th>Contraseña</th><th>Rol</th><th>Estado</th><th>Acciones</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Aprobar Clientes -->
+                <div id="aprobarClientes" class="section-content hide">
+                    <h3>Propuestas de Clientes Pendientes</h3>
+                    <div class="table-container">
+                        <table id="tablaPropuestas" class="data-table">
+                            <thead>
+                                <tr><th>ID</th><th>Vendedor</th><th>Nombre</th><th>CC/NIT</th><th>Contador</th><th>Ciudad</th><th>Región</th><th>Dirección</th><th>Email</th><th>Teléfono</th><th>Contraseña</th><th>Estado</th><th>Acción</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Ajuste de Tarifa General -->
+                <div id="ajusteTarifa" class="section-content hide">
+                    <h3>Ajuste de Tarifa General</h3>
+                    <div class="form-card">
+                        <div class="form-row">
+                            <div class="form-group"><label for="tarifaAgua">Tarifa Agua por m3 ($)</label><input type="number" id="tarifaAgua" value="2800"></div>
+                            <div class="form-group"><label for="tarifaAlcantarillado">Tarifa Alcantarillado (%)</label><input type="number" id="tarifaAlcantarillado" value="45" step="1"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="tarifaAseo">Tarifa Aseo (%)</label><input type="number" id="tarifaAseo" value="30" step="1"></div>
+                            <div class="form-group"><label for="plazoPago">Plazo de Pago (días)</label><input type="number" id="plazoPago" value="30"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="interesMora">Interés por Mora (%)</label><input type="number" id="interesMora" value="2.0" step="0.1"></div>
+                            <div class="form-group"><label for="cargoFijo">Cargo Fijo</label><input type="number" id="cargoFijo" value="5000"></div>
+                        </div>
+                        <button class="btn-primary" onclick="window.guardarConfiguracion()">Guardar Cambios</button>
+                        <div id="mensajeConfig" class="alert-success hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Ajuste de Tarifa por Cliente -->
+                <div id="ajusteTarifaCliente" class="section-content hide">
+                    <h3>Ajuste de Tarifa por Cliente</h3>
+                    <div class="form-card">
+                        <div class="form-row">
+                            <div class="form-group"><label for="selectClienteTarifa">Seleccionar Cliente</label>
+                                <select id="selectClienteTarifa"><option value="">Seleccione un cliente</option></select>
+                            </div>
+                            <div class="form-group"><label for="tarifaEspecial">Tarifa Especial (m3)</label><input type="number" id="tarifaEspecial" placeholder="Dejar vacío"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="plazoEspecial">Plazo de Pago Especial (días)</label><input type="number" id="plazoEspecial" placeholder="Dejar vacío"></div>
+                            <div class="form-group"><label for="extenderVencimiento">Extender Vencimiento (días)</label><input type="number" id="extenderVencimiento" placeholder="Días adicionales"></div>
+                        </div>
+                        <button class="btn-primary" onclick="window.guardarTarifaPorCliente()">Guardar Configuración Especial</button>
+                        <div id="mensajeTarifaCliente" class="alert-success hidden"></div>
+                    </div>
+                    <div class="table-container">
+                        <h4>Clientes con Tarifa Especial</h4>
+                        <table id="tablaTarifasEspeciales" class="data-table">
+                            <thead>
+                                <tr><th>Cliente</th><th>Tarifa x m3</th><th>Plazo Pago</th><th>Fecha Asignación</th><th>Acción</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Limpieza de Datos -->
+                <div id="limpiezaDatos" class="section-content hide">
+                    <h3>Limpieza de Datos</h3>
+                    <div class="form-card">
+                        <p>Eliminar propuestas de clientes que ya han sido aprobadas.</p>
+                        <button class="btn-primary btn-warning" onclick="window.limpiarPropuestasAprobadas()">Eliminar Propuestas Aprobadas</button>
+                        <div id="mensajeLimpieza" class="alert-success hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Gestión de Permisos -->
+                <div id="gestionPermisos" class="section-content hide">
+                    <h3>Gestión de Permisos para Vendedores</h3>
+                    <div class="form-card">
+                        <div class="form-row">
+                            <div class="form-group"><label for="selectVendedorPermiso">Vendedor</label><select id="selectVendedorPermiso"><option value="">Seleccione un vendedor</option></select></div>
+                            <div class="form-group"><label for="selectClientePermiso">Cliente</label><select id="selectClientePermiso"><option value="">Seleccione un cliente</option></select></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="tipoPermiso">Tipo de Permiso</label>
+                                <select id="tipoPermiso">
+                                    <option value="modificar">Modificar datos del cliente</option>
+                                    <option value="ver">Solo visualizar</option>
+                                </select>
+                            </div>
+                            <div class="form-group"><label for="fechaExpiracion">Fecha Expiración</label><input type="date" id="fechaExpiracion"></div>
+                        </div>
+                        <button class="btn-primary" onclick="window.otorgarPermiso()">Otorgar Permiso</button>
+                    </div>
+                    <div class="table-container">
+                        <h4>Permisos Activos</h4>
+                        <table id="tablaPermisos" class="data-table">
+                            <thead>
+                                <tr><th>Vendedor</th><th>Cliente</th><th>Permiso</th><th>Expira</th><th>Acción</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Recaudos -->
+                <div id="recaudos" class="section-content hide">
+                    <h3>Gestión de Recaudos</h3>
+                    <div class="form-card">
+                        <div class="filtro-recaudos">
+                            <div class="form-group flex-group">
+                                <label for="filtroMunicipioRecaudo">Municipio/Ciudad</label>
+                                <select id="filtroMunicipioRecaudo">
+                                    <option value="">Todos</option>
+                                    <option value="Bogota">Bogotá</option>
+                                    <option value="Medellin">Medellín</option>
+                                    <option value="Cali">Cali</option>
+                                </select>
+                            </div>
+                            <button class="btn-primary" onclick="window.filtrarRecaudosPorMunicipio()">Filtrar</button>
+                        </div>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card"><h3>Total por Municipio Seleccionado</h3><div class="stat-value" id="totalRecaudosMunicipio">$0</div></div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <h4>Lista de Recaudos</h4>
+                        <div class="table-responsive">
+                            <table id="tablaRecaudosAdmin" class="data-table admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Cliente</th>
+                                        <th>Municipio</th>
+                                        <th>Monto</th>
+                                        <th>Fecha</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <h4>Resumen por Municipio</h4>
+                        <div class="table-responsive">
+                            <table id="tablaResumenMunicipios" class="data-table summary-table">
+                                <thead>
+                                    <tr>
+                                        <th>Municipio</th>
+                                        <th>Total Recaudado</th>
+                                        <th>%</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reportes -->
+                <div id="reportes" class="section-content hide">
+                    <h3>Reportes de Cierre de Ingresos</h3>
+                    <div class="form-card">
+                        <div class="form-row">
+                            <div class="form-group"><label for="tipoReporte">Tipo</label>
+                                <select id="tipoReporte">
+                                    <option value="mensual">Mensual</option>
+                                    <option value="anual">Anual</option>
+                                </select>
+                            </div>
+                            <div class="form-group"><label for="periodoReporte">Periodo (AAAA-MM)</label>
+                                <input type="text" id="periodoReporte" class="month-input" placeholder="2025-04" pattern="[0-9]{4}-[0-9]{2}" maxlength="7" value="2025-04">
+                            </div>
+                        </div>
+                        <button class="btn-primary" onclick="window.generarReporte()">Generar Reporte</button>
+                    </div>
+                    <div id="vistaReporte" class="reporte-financiero-container"></div>
+                </div>
+
+                <!-- Rutas -->
+                <div id="rutas" class="section-content hide">
+                    <h3>Visualización de Rutas de Facturación</h3>
+                    <div class="form-card">
+                        <div class="buscador-cliente-mapa">
+                            <div class="form-group flex-group">
+                                <label for="selectClienteMapa">Buscar cliente</label>
+                                <select id="selectClienteMapa">
+                                    <option value="">Seleccione un cliente</option>
+                                </select>
+                            </div>
+                            <button class="btn-primary" onclick="window.buscarClienteEnMapa()">Ubicar en Mapa</button>
+                        </div>
+                    </div>
+                    <div id="mapaRutas" class="map-container"></div>
+                </div>
+            </main>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p>Creado by Programmer Ivan Rodríguez - Frontend - Derechos Reservados © 2026 SIFGA</p>
+            </div>
+        </footer>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+    <script type="module">
+        import { toggleMobileMenu, logout } from './js/utils.js';
+        import { 
+            inicializarAdmin, showSection, toggleSubmenu, crearNuevoUsuario,
+            guardarConfiguracion, guardarTarifaPorCliente, limpiarPropuestasAprobadas,
+            otorgarPermiso, filtrarRecaudosPorMunicipio, generarReporte, buscarClienteEnMapa
+        } from './js/roles/admin.js';
+        
+        window.toggleMobileMenu = toggleMobileMenu;
+        window.logout = logout;
+        window.showSection = showSection;
+        window.toggleSubmenu = toggleSubmenu;
+        window.crearNuevoUsuario = crearNuevoUsuario;
+        window.guardarConfiguracion = guardarConfiguracion;
+        window.guardarTarifaPorCliente = guardarTarifaPorCliente;
+        window.limpiarPropuestasAprobadas = limpiarPropuestasAprobadas;
+        window.otorgarPermiso = otorgarPermiso;
+        window.filtrarRecaudosPorMunicipio = filtrarRecaudosPorMunicipio;
+        window.generarReporte = generarReporte;
+        window.buscarClienteEnMapa = buscarClienteEnMapa;
+        
+        document.getElementById('nav-dashboard')?.addEventListener('click', (e) => { e.preventDefault(); showSection('dashboard'); });
+        document.getElementById('nav-gestionUsuarios')?.addEventListener('click', (e) => { e.preventDefault(); showSection('gestionUsuarios'); });
+        document.getElementById('nav-aprobarClientes')?.addEventListener('click', (e) => { e.preventDefault(); showSection('aprobarClientes'); });
+        document.getElementById('nav-ajusteTarifa')?.addEventListener('click', (e) => { e.preventDefault(); showSection('ajusteTarifa'); });
+        document.getElementById('nav-ajusteTarifaCliente')?.addEventListener('click', (e) => { e.preventDefault(); showSection('ajusteTarifaCliente'); });
+        document.getElementById('nav-limpiezaDatos')?.addEventListener('click', (e) => { e.preventDefault(); showSection('limpiezaDatos'); });
+        document.getElementById('nav-gestionPermisos')?.addEventListener('click', (e) => { e.preventDefault(); showSection('gestionPermisos'); });
+        document.getElementById('nav-recaudos')?.addEventListener('click', (e) => { e.preventDefault(); showSection('recaudos'); });
+        document.getElementById('nav-reportes')?.addEventListener('click', (e) => { e.preventDefault(); showSection('reportes'); });
+        document.getElementById('nav-rutas')?.addEventListener('click', (e) => { e.preventDefault(); showSection('rutas'); });
+        
+        document.getElementById('nav-configToggle')?.addEventListener('click', (e) => { 
+            e.preventDefault(); 
+            toggleSubmenu('configSubmenu'); 
+        });
+        
+        inicializarAdmin();
+    </script>
+</body>
+</html>

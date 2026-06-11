@@ -1,0 +1,1479 @@
+/* ============================================================================
+   SIFGA - ESTILOS PRINCIPALES
+   Paleta de colores basada en el logo: Azules, blancos y grises
+   CREADO BY PROGRAMMER IVAN RODRIGUEZ - DERECHOS RESERVADOS © 2025
+   ============================================================================ */
+
+/* ========== VARIABLES GLOBALES ========== */
+:root {
+    /* Colores principales - Basados en el logo */
+    --primary-blue: #0f2b3d;
+    --primary-dark: #1a4a6f;
+    --primary-light: #2dd4bf;
+    --primary-teal: #14b8a6;
+
+    /* Colores neutros */
+    --white: #ffffff;
+    --white-smoke: #f8fafc;
+    --gray-light: #f1f5f9;
+    --gray-medium: #cbd5e1;
+    --gray-border: #e2e8f0;
+    --gray-dark: #64748b;
+
+    /* Texto */
+    --text-dark: #1e293b;
+    --text-gray: #475569;
+    --text-light: #f8fafc;
+    --text-muted: #94a3b8;
+
+    /* Estados */
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+    --info: #3b82f6;
+
+    /* Sombras */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* ========== RESET Y BASE ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark) 50%, var(--primary-teal) 100%);
+    min-height: 100vh;
+}
+
+/* ========== LOGIN ========== */
+.login-container {
+    max-width: 480px;
+    margin: 60px auto 40px auto;
+    background: var(--white);
+    padding: 2.5rem;
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
+    animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.logo-area {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.logo-placeholder {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.logo-placeholder svg {
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+    transition: transform 0.3s ease;
+}
+
+.logo-placeholder svg:hover {
+    transform: scale(1.05);
+}
+
+.login-container h1 {
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-teal) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.login-container .subtitle {
+    color: var(--text-gray);
+    font-size: 0.85rem;
+}
+
+.role-selector {
+    display: flex;
+    gap: 12px;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+}
+
+.role-btn {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid var(--gray-border);
+    background: var(--white);
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+    color: var(--text-dark);
+}
+
+.role-btn:hover {
+    border-color: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.role-btn.active {
+    border-color: var(--primary-light);
+    background: linear-gradient(135deg, rgba(45, 212, 191, 0.1), rgba(20, 184, 166, 0.05));
+    color: var(--primary-blue);
+}
+
+.input-group {
+    margin-bottom: 1.2rem;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--gray-border);
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.2);
+}
+
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark) 100%);
+    color: var(--white);
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
+}
+
+.demo-creds {
+    text-align: center;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--gray-border);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.demo-creds hr {
+    margin: 0.5rem 0;
+    border-color: var(--gray-border);
+}
+
+/* ========== DASHBOARD LAYOUT ========== */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    background: var(--gray-light);
+}
+
+/* Sidebar - Azul principal */
+.sidebar {
+    width: 280px;
+    background: linear-gradient(180deg, var(--primary-blue) 0%, var(--primary-dark) 100%);
+    color: var(--white);
+    padding: 1.5rem;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+    transition: all 0.3s ease;
+    z-index: 100;
+}
+
+.logo {
+    text-align: center;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+.logo h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+    color: var(--white);
+}
+
+.logo p {
+    font-size: 0.7rem;
+    opacity: 0.8;
+    color: var(--primary-light);
+}
+
+/* Navegación */
+.nav-links {
+    list-style: none;
+}
+
+.nav-links li {
+    margin-bottom: 0.5rem;
+}
+
+.nav-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    display: block;
+    padding: 12px 16px;
+    border-radius: 10px;
+    transition: all 0.3s;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.nav-links a:hover {
+    background: rgba(45, 212, 191, 0.15);
+    color: var(--primary-light);
+    transform: translateX(5px);
+}
+
+/* Submenu */
+.nav-submenu {
+    position: relative;
+}
+
+.submenu {
+    list-style: none;
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.submenu li {
+    margin-bottom: 0.3rem;
+}
+
+.submenu a {
+    font-size: 0.85rem;
+    padding: 8px 16px;
+}
+
+/* Menu toggle (mobile) */
+.menu-toggle {
+    display: none;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 101;
+    background: var(--primary-blue);
+    color: var(--white);
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    margin-left: 280px;
+    padding: 1.5rem;
+    background: var(--gray-light);
+    min-height: 100vh;
+    transition: margin-left 0.3s ease;
+    padding-bottom: 80px;
+}
+
+/* Top Bar */
+.top-bar {
+    background: var(--white);
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-border);
+}
+
+.top-bar h2 {
+    font-size: 1.25rem;
+    color: var(--primary-blue);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.role-badge {
+    background: rgba(45, 212, 191, 0.15);
+    color: var(--primary-teal);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.logout-btn {
+    background: var(--error);
+    color: var(--white);
+    border: none;
+    padding: 8px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.logout-btn:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+}
+
+/* ========== CARDS ========== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-card {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 20px;
+    border-left: 4px solid var(--primary-light);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.stat-card h3 {
+    color: var(--text-gray);
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--primary-blue);
+}
+
+/* ========== TABLAS ========== */
+.table-container {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 1rem;
+    overflow-x: auto;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-border);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+th {
+    background: var(--primary-blue);
+    color: var(--white);
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+}
+
+td {
+    padding: 10px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--gray-border);
+    color: var(--text-dark);
+}
+
+tr:hover {
+    background: var(--gray-light);
+}
+
+/* ========== FORMULARIOS ========== */
+.form-card {
+    background: var(--white);
+    padding: 1.5rem;
+    border-radius: 16px;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-border);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    font-size: 0.85rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 2px solid var(--gray-border);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    transition: all 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.2);
+}
+
+/* ========== BOTONES ========== */
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark) 100%);
+    color: var(--white);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
+}
+
+.btn-danger {
+    background: var(--error);
+    color: var(--white);
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+}
+
+.btn-success {
+    background: var(--success);
+    color: var(--white);
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* ========== FILTROS ========== */
+.filtro-recaudos {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+.buscador-cliente-mapa {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+/* ========== MAPA ========== */
+.map-container {
+    height: 450px;
+    background: var(--gray-light);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--gray-border);
+}
+
+/* ========== ESTADOS ========== */
+.estado-pendiente {
+    color: var(--warning);
+    font-weight: 600;
+}
+
+.estado-aprobado {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.alert-success {
+    background: #d1fae5;
+    color: #065f46;
+    padding: 12px;
+    border-radius: 10px;
+    border-left: 4px solid var(--success);
+}
+
+.alert-warning {
+    background: #fed7aa;
+    color: #92400e;
+    padding: 12px;
+    border-radius: 10px;
+    border-left: 4px solid var(--warning);
+}
+
+.alert-info {
+    background: #dbeafe;
+    color: #1e40af;
+    padding: 12px;
+    border-radius: 10px;
+    border-left: 4px solid var(--info);
+}
+
+/* ========== REPORTES ========== */
+.reporte-financiero {
+    background: var(--white);
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+}
+
+.reporte-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--primary-blue);
+}
+
+.reporte-logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary-blue);
+    margin-bottom: 10px;
+}
+
+.reporte-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.reporte-tabla th,
+.reporte-tabla td {
+    border: 1px solid var(--gray-border);
+    padding: 10px;
+}
+
+.reporte-tabla th {
+    background: var(--primary-blue);
+    color: var(--white);
+}
+
+.reporte-total {
+    background: #f0fdf4;
+    font-weight: bold;
+}
+
+.reporte-footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--gray-border);
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+/* ========== FACTURAS ========== */
+.factura-container {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--gray-border);
+}
+
+/* ========== ESTILOS PARA LA FACTURA ========== */
+.factura-container {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+.factura-container h2, .factura-container h3 {
+    color: #1e293b;
+}
+
+.factura-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+
+.factura-container table td,
+.factura-container table th {
+    padding: 8px 12px;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 13px;
+}
+
+.factura-container .total-row {
+    font-weight: bold;
+    background: #f0fdf4;
+}
+
+.factura-botones {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* ========== ESTILOS ADICIONALES PARA FACTURA PROFESIONAL ========== */
+
+/* Contenedor principal de la factura */
+.factura-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', 'Segoe UI', sans-serif;
+}
+
+/* Encabezado */
+.factura-encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #0f2b3d;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.factura-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.factura-logo-icon {
+    font-size: 40px;
+}
+
+.factura-empresa h2 {
+    color: #0f2b3d;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.factura-empresa p {
+    font-size: 11px;
+    color: #555;
+    margin: 2px 0;
+}
+
+.factura-titulo h1 {
+    color: #0f2b3d;
+    font-size: 18px;
+    text-align: right;
+    margin: 0;
+}
+
+.factura-subtitulo {
+    font-size: 10px;
+    color: #666;
+    text-align: right;
+}
+
+/* Datos del usuario */
+.factura-datos-usuario {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 10px;
+    flex-wrap: wrap;
+}
+
+.factura-usuario-info,
+.factura-contrato-info {
+    flex: 1;
+    min-width: 200px;
+}
+
+.factura-datos-usuario h3 {
+    font-size: 12px;
+    color: #0f2b3d;
+    margin-bottom: 8px;
+    border-left: 3px solid #2dd4bf;
+    padding-left: 8px;
+}
+
+.factura-datos-usuario p {
+    font-size: 11px;
+    margin: 4px 0;
+}
+
+/* Tablas de información */
+.factura-tabla-info td,
+.factura-tabla-lectura td,
+.factura-tabla-cargos td,
+.factura-tabla-subsidios td {
+    padding: 6px;
+    font-size: 11px;
+}
+
+.factura-tabla-info td:first-child {
+    width: 120px;
+    font-weight: normal;
+}
+
+.factura-tabla-lectura {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.factura-tabla-lectura th,
+.factura-tabla-lectura td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+}
+
+.factura-tabla-lectura th {
+    background: #f1f5f9;
+}
+
+/* Detalle de cargos */
+.factura-detalle-cargos h3,
+.factura-subsidios h3,
+.factura-pagos h3,
+.factura-datos-tecnicos h3 {
+    font-size: 12px;
+    color: #0f2b3d;
+    margin: 15px 0 10px 0;
+    border-left: 3px solid #2dd4bf;
+    padding-left: 8px;
+}
+
+.factura-tabla-cargos,
+.factura-tabla-subsidios {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.factura-tabla-cargos th,
+.factura-tabla-cargos td,
+.factura-tabla-subsidios td {
+    padding: 8px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.factura-tabla-cargos th {
+    background: #f1f5f9;
+    text-align: left;
+}
+
+.factura-tabla-cargos td.valor,
+.factura-tabla-subsidios td.valor {
+    text-align: right;
+}
+
+/* Subsidios y contribuciones */
+.subsidio td:first-child {
+    color: #10b981;
+}
+
+.contribucion td:first-child {
+    color: #ef4444;
+}
+
+.mora td:first-child {
+    color: #f59e0b;
+}
+
+.total {
+    font-weight: bold;
+    border-top: 2px solid #0f2b3d;
+}
+
+.total-valor {
+    text-align: right;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Pagos */
+.factura-pagos p,
+.factura-pagos ul {
+    font-size: 10px;
+    margin: 5px 0;
+}
+
+.factura-pagos ul {
+    padding-left: 20px;
+}
+
+.factura-quejas {
+    background: #fef3c7;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-size: 10px;
+    text-align: center;
+}
+
+.factura-quejas p {
+    margin: 0;
+}
+
+/* Documento de pago */
+.factura-documento-pago {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+    padding: 12px;
+    background: #f0fdf4;
+    border-radius: 8px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.factura-documento-info p {
+    font-size: 11px;
+    margin: 3px 0;
+}
+
+.codigo-barras {
+    font-family: monospace;
+    font-size: 22px;
+    letter-spacing: 3px;
+    text-align: center;
+}
+
+.codigo-numero {
+    font-size: 10px;
+    text-align: center;
+    margin-top: 5px;
+}
+
+/* Total destacado */
+.factura-total-destacado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0f2b3d;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 15px 0;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.factura-total-destacado span {
+    font-size: 12px;
+}
+
+.factura-total-destacado strong {
+    font-size: 20px;
+}
+
+/* Footer */
+.factura-footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #e2e8f0;
+    font-size: 9px;
+    color: #666;
+}
+
+.factura-footer-derechos {
+    margin-top: 8px;
+    font-size: 8px;
+}
+
+/* Botones */
+.factura-botones {
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .factura-container {
+        padding: 15px;
+    }
+
+    .factura-encabezado {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .factura-titulo h1 {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .factura-datos-usuario {
+        flex-direction: column;
+    }
+
+    .factura-documento-pago {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .factura-total-destacado {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* Para impresión */
+@media print {
+    body {
+        padding: 0;
+        margin: 0;
+        background: white;
+    }
+
+    .factura-container {
+        margin: 0;
+        padding: 15px;
+        box-shadow: none;
+    }
+
+    .factura-botones {
+        display: none;
+    }
+
+    .sidebar, .top-bar, .logout-btn, .menu-toggle {
+        display: none !important;
+    }
+}
+
+/* Estilos para la tabla de recaudos */
+#tablaRecaudosAdmin th {
+    background: #0f2b3d;
+    color: white;
+    padding: 12px;
+}
+
+#tablaRecaudosAdmin td {
+    padding: 10px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+#tablaRecaudosAdmin tr:hover {
+    background: #f1f5f9;
+}
+
+/* ========== FOOTER ========== */
+.footer {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark) 50%, var(--primary-teal) 100%);
+    color: var(--white);
+    text-align: center;
+    padding: 1rem;
+    margin-top: 2rem;
+    border-top: none;
+    font-size: 0.75rem;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer-content p {
+    opacity: 0.9;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+        width: 280px;
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar-overlay.active {
+        display: block;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 1rem;
+        padding-top: 70px;
+        padding-bottom: 70px;
+    }
+
+    .top-bar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+    }
+
+    .filtro-recaudos,
+    .buscador-cliente-mapa {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 550px;
+    }
+
+    th, td {
+        padding: 8px 10px;
+        font-size: 0.75rem;
+    }
+
+    .map-container {
+        height: 350px;
+    }
+
+    .login-container {
+        margin: 20px;
+        padding: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .role-selector {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .role-btn {
+        width: 100%;
+    }
+
+    .footer {
+        font-size: 0.7rem;
+        padding: 0.75rem;
+    }
+}
+
+/* ========== IMPRESIÓN ========== */
+@media print {
+
+    .sidebar, .top-bar, .logout-btn, .btn-primary, .btn-danger, .role-badge,
+    .form-card, .stats-grid, .menu-toggle, .footer, .filtro-recaudos,
+    .buscador-cliente-mapa, #reportes .btn-primary, #reportes .form-card {
+        display: none !important;
+    }
+
+    .main-content {
+        margin-left: 0 !important;
+        padding: 0 !important;
+    }
+
+    .reporte-financiero, .factura-container {
+        padding: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .reporte-tabla th {
+        background: #ddd !important;
+        color: #000 !important;
+    }
+}
+
+/* ========== ESTILOS PARA LOGO - CORREGIDO SIN WARNINGS ========== */
+.logo-img {
+    max-width: 250px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+    border-radius: 24px;
+    box-shadow: 0 10px 25px rgba(30, 57, 214, 0.651);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: block;
+}
+
+.logo-img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar-logo {
+    max-width: 150px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 0.8rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 18px;
+    background: rgba(40, 89, 224, 0.178);
+    padding: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transition: transform 0.3s ease;
+}
+
+.sidebar-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Ajuste responsive */
+@media (max-width: 768px) {
+    .logo-img {
+        max-width: 90px;
+    }
+
+    .sidebar-logo {
+        max-width: 60px;
+        padding: 4px;
+    }
+}
+
+/* Para pantallas de alta resolución (retina) - sin warnings de Edge */
+@media (min-resolution: 2dppx) {
+    .logo-img {
+        image-rendering: auto;
+    }
+
+    .sidebar-logo {
+        image-rendering: auto;
+    }
+}
+
+/* ========== ESTRUCTURA PRINCIPAL PARA FOOTER FIJO AL FINAL ========== */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark) 50%, var(--primary-teal) 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Wrapper para contenido y footer */
+.app-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.dashboard-container {
+    display: flex;
+    flex: 1;
+    background: var(--gray-light);
+}
+
+/* Footer siempre al final */
+.footer {
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-dark) 100%);
+    color: var(--text-light);
+    text-align: center;
+    padding: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.75rem;
+    margin-top: auto;
+    width: 100%;
+}
+
+.footer-content p {
+    margin: 0;
+    opacity: 0.8;
+    transition: opacity 0.3s ease;
+}
+
+.footer-content p:hover {
+    opacity: 1;
+}
+
+/* Ajuste para el login (sin sidebar) */
+.login-container+.footer {
+    margin-top: 0;
+}
+
+/* Manejo de visibilidad de secciones */
+.section-content.hide {
+    display: none;
+}
+
+/* Mensaje de resultado de pago */
+.alert-success.hidden {
+    display: none;
+}
+
+.alert-success {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    background-color: #10b981;
+    color: white;
+    font-weight: 500;
+}
+
+/* Mejoras de accesibilidad */
+.menu-toggle:focus,
+.logout-btn:focus,
+.btn-primary:focus,
+select:focus,
+a:focus {
+    outline: 2px solid #2dd4bf;
+    outline-offset: 2px;
+}
+
+/* Asegurar que los selects tengan suficiente contraste */
+select {
+    padding: 0.5rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.375rem;
+    background-color: white;
+    font-size: 1rem;
+}
+
+/* ========== ESTILOS ADICIONALES PARA ADMINISTRADOR ========== */
+
+/* Clase para submenú oculto */
+.submenu.hide {
+    display: none;
+}
+
+/* Botón warning (amarillo) */
+.btn-warning {
+    background: #eab308;
+    color: var(--white);
+}
+
+.btn-warning:hover {
+    background: #ca8a04;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Input month con mejor compatibilidad */
+.month-input {
+    padding: 10px 14px;
+    border: 2px solid var(--gray-border);
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-family: inherit;
+    background-color: var(--white);
+}
+
+.month-input:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.2);
+}
+
+/* Tabla responsive para overflow */
+.table-responsive {
+    overflow-x: auto;
+    width: 100%;
+}
+
+/* Tablas con formato mejorado */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th {
+    background: var(--primary-blue);
+    color: var(--white);
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.data-table td {
+    padding: 10px 15px;
+    border-bottom: 1px solid var(--gray-border);
+    color: var(--text-dark);
+}
+
+.data-table tr:hover {
+    background: var(--gray-light);
+}
+
+/* Tabla específica para administrador */
+.admin-table th,
+.admin-table td {
+    padding: 10px;
+    text-align: left;
+}
+
+.admin-table th:nth-child(4),
+.admin-table td:nth-child(4) {
+    text-align: right;
+}
+
+.admin-table th:last-child,
+.admin-table td:last-child {
+    text-align: center;
+}
+
+/* Tabla de resumen por municipio */
+.summary-table th:nth-child(2),
+.summary-table td:nth-child(2),
+.summary-table th:nth-child(3),
+.summary-table td:nth-child(3) {
+    text-align: right;
+}
+
+/* Vista de reporte */
+.reporte-financiero-container {
+    margin-top: 1.5rem;
+}
+
+/* Grupo flexible para formularios */
+.flex-group {
+    flex: 1;
+}
+
+/* ========== ESTILOS ADICIONALES PARA VENDEDOR ========== */
+
+/* Grupo flexible para formularios */
+.flex-group {
+    flex: 1;
+}
+
+/* Grupo de botones en formularios */
+.form-buttons-group {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+/* Botón secundario */
+.btn-secondary {
+    margin-left: 0;
+    background: linear-gradient(135deg, var(--gray-dark) 0%, var(--text-gray) 100%);
+}
+
+.btn-secondary:hover {
+    background: linear-gradient(135deg, var(--text-gray) 0%, var(--gray-dark) 100%);
+}
+
+/* Tablas específicas para vendedor */
+.lectura-table {
+    min-width: 950px;
+}
+
+.anticipos-table {
+    min-width: 700px;
+}
+
+/* Contenedor de resultado de factura */
+.factura-result-container {
+    margin-top: 20px;
+}
+
+/* Mensaje de información */
+.info-message {
+    margin-top: 15px;
+    padding: 12px;
+    background: #fef3c7;
+    border-radius: 8px;
+    border-left: 4px solid #f59e0b;
+    color: #92400e;
+}
+
+/* Ocultar elementos */
+.hide {
+    display: none;
+}
+
+/* Mensajes de alerta ocultos */
+.alert-success.hidden {
+    display: none;
+}

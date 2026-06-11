@@ -1,0 +1,90 @@
+{
+  "info": {
+    "name": "SIFGA API",
+    "description": "Colección de pruebas para la API REST de SIFGA 2.0\n\nAutenticación:\n- Admin: admin@sifga.com / admin123\n- Para requests autenticadas, usar variable {{token}} en Header: Authorization = Bearer {{token}}\n\nSetup:\n1. Ejecutar login con admin para obtener token\n2. En Tests de login, setear variable: pm.collectionVariables.set('token', pm.response.json().token)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:3000/api" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        { "name": "Login Admin", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"correo\": \"admin@sifga.com\",\n  \"contrasena\": \"admin123\"\n}" }, "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] } } },
+        { "name": "Login Vendedor", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"correo\": \"juan.perez@sifga.com\",\n  \"contrasena\": \"vendor123\"\n}" }, "url": { "raw": "{{base_url}}/auth/login", "host": ["{{base_url}}"], "path": ["auth", "login"] } } },
+        { "name": "Get Profile", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/auth/profile", "host": ["{{base_url}}"], "path": ["auth", "profile"] } } },
+        { "name": "Change Password", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"contrasena_actual\": \"admin123\",\n  \"nueva_contrasena\": \"nueva123\"\n}" }, "url": { "raw": "{{base_url}}/auth/change-password", "host": ["{{base_url}}"], "path": ["auth", "change-password"] } } },
+        { "name": "Forgot Password", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"correo\": \"admin@sifga.com\"\n}" }, "url": { "raw": "{{base_url}}/auth/forgot-password", "host": ["{{base_url}}"], "path": ["auth", "forgot-password"] } } }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        { "name": "Get All Users", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/users", "host": ["{{base_url}}"], "path": ["users"] } } },
+        { "name": "Get Roles", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/users/roles", "host": ["{{base_url}}"], "path": ["users", "roles"] } } },
+        { "name": "Create User", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Nuevo\",\n  \"apellido\": \"Vendedor\",\n  \"correo\": \"vendedor2@sifga.com\",\n  \"usuario\": \"vendedor2\",\n  \"contrasena\": \"sifga123\",\n  \"id_rol\": 2\n}" }, "url": { "raw": "{{base_url}}/users", "host": ["{{base_url}}"], "path": ["users"] } } },
+        { "name": "Update User", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"nombre\": \"Actualizado\",\n  \"apellido\": \"Usuario\"\n}" }, "url": { "raw": "{{base_url}}/users/2", "host": ["{{base_url}}"], "path": ["users", "2"] } } },
+        { "name": "Toggle User Status", "request": { "method": "PATCH", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/users/2/toggle-status", "host": ["{{base_url}}"], "path": ["users", "2", "toggle-status"] } } },
+        { "name": "Reset User Password", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"nueva_contrasena\": \"sifga123\"\n}" }, "url": { "raw": "{{base_url}}/users/2/reset-password", "host": ["{{base_url}}"], "path": ["users", "2", "reset-password"] } } }
+      ]
+    },
+    {
+      "name": "Clientes",
+      "item": [
+        { "name": "Get All Clientes", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/clientes", "host": ["{{base_url}}"], "path": ["clientes"] } } },
+        { "name": "Search Clientes", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/clientes/search?termino=123", "host": ["{{base_url}}"], "path": ["clientes", "search"] } } },
+        { "name": "Get Municipios", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/clientes/municipios", "host": ["{{base_url}}"], "path": ["clientes", "municipios"] } } },
+        { "name": "Get Estratos", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/clientes/estratos", "host": ["{{base_url}}"], "path": ["clientes", "estratos"] } } },
+        { "name": "Create Cliente", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"nombres\": \"Carlos\",\n  \"apellidos\": \"Mendoza\",\n  \"cedula\": \"987654321\",\n  \"direccion\": \"Calle 123 #45-67\",\n  \"telefono\": \"3001234567\",\n  \"correo\": \"carlos@email.com\",\n  \"numero_contador\": \"CTR-001\",\n  \"id_municipio\": 1,\n  \"id_estrato\": 3\n}" }, "url": { "raw": "{{base_url}}/clientes", "host": ["{{base_url}}"], "path": ["clientes"] } } },
+        { "name": "Get Pending Proposals", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/clientes/pendientes", "host": ["{{base_url}}"], "path": ["clientes", "pendientes"] } } },
+        { "name": "Approve Proposal", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"contrasena_asignada\": \"cliente123\"\n}" }, "url": { "raw": "{{base_url}}/clientes/aprobar/1", "host": ["{{base_url}}"], "path": ["clientes", "aprobar", "1"] } } },
+        { "name": "Reject Proposal", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"observaciones\": \"Documentación incompleta\"\n}" }, "url": { "raw": "{{base_url}}/clientes/rechazar/1", "host": ["{{base_url}}"], "path": ["clientes", "rechazar", "1"] } } }
+      ]
+    },
+    {
+      "name": "Lecturas",
+      "item": [
+        { "name": "Get All Lecturas", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/lecturas", "host": ["{{base_url}}"], "path": ["lecturas"] } } },
+        { "name": "Create Lectura", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"id_cliente\": 1,\n  \"lectura_actual\": 250,\n  \"fecha_lectura\": \"2026-06-01\",\n  \"observaciones\": \"Lectura normal\"\n}" }, "url": { "raw": "{{base_url}}/lecturas", "host": ["{{base_url}}"], "path": ["lecturas"] } } },
+        { "name": "Get Historial Cliente", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/lecturas/cliente/1/historial", "host": ["{{base_url}}"], "path": ["lecturas", "cliente", "1", "historial"] } } }
+      ]
+    },
+    {
+      "name": "Facturas",
+      "item": [
+        { "name": "Get All Facturas", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/facturas", "host": ["{{base_url}}"], "path": ["facturas"] } } },
+        { "name": "Get Estados", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/facturas/estados", "host": ["{{base_url}}"], "path": ["facturas", "estados"] } } },
+        { "name": "Search Facturas", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/facturas/search?termino=FAC-2026", "host": ["{{base_url}}"], "path": ["facturas", "search"] } } },
+        { "name": "Create Factura", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"id_cliente\": 1,\n  \"periodo\": \"2026-06-01 / 2026-06-30\",\n  \"fecha_lectura\": \"2026-06-15\",\n  \"fecha_vencimiento\": \"2026-07-15\",\n  \"lectura_actual\": 300,\n  \"observaciones\": \"Factura mensual\"\n}" }, "url": { "raw": "{{base_url}}/facturas", "host": ["{{base_url}}"], "path": ["facturas"] } } },
+        { "name": "Get Factura By ID", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/facturas/1", "host": ["{{base_url}}"], "path": ["facturas", "1"] } } }
+      ]
+    },
+    {
+      "name": "Pagos",
+      "item": [
+        { "name": "Get All Pagos", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/pagos", "host": ["{{base_url}}"], "path": ["pagos"] } } },
+        { "name": "Get Medios Pago", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/pagos/medios-pago", "host": ["{{base_url}}"], "path": ["pagos", "medios-pago"] } } },
+        { "name": "Create Pago", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"id_factura\": 1,\n  \"id_medio_pago\": 1,\n  \"valor\": 213250,\n  \"referencia\": \"PAG-001\",\n  \"fecha_pago\": \"2026-06-03\"\n}" }, "url": { "raw": "{{base_url}}/pagos", "host": ["{{base_url}}"], "path": ["pagos"] } } },
+        { "name": "Resumen Municipios", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/pagos/resumen-municipios", "host": ["{{base_url}}"], "path": ["pagos", "resumen-municipios"] } } }
+      ]
+    },
+    {
+      "name": "Configuración",
+      "item": [
+        { "name": "Get Config", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/config", "host": ["{{base_url}}"], "path": ["config"] } } },
+        { "name": "Update Config", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"tarifa_agua_m3\": 3000,\n  \"interes_mora_porcentaje\": 2.5\n}" }, "url": { "raw": "{{base_url}}/config", "host": ["{{base_url}}"], "path": ["config"] } } }
+      ]
+    },
+    {
+      "name": "Reportes",
+      "item": [
+        { "name": "Dashboard Stats", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/reportes/dashboard", "host": ["{{base_url}}"], "path": ["reportes", "dashboard"] } } },
+        { "name": "Monthly Report", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/reportes/mensual?anio=2026&mes=6", "host": ["{{base_url}}"], "path": ["reportes", "mensual"] } } },
+        { "name": "Annual Report", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/reportes/anual?anio=2026", "host": ["{{base_url}}"], "path": ["reportes", "anual"] } } },
+        { "name": "Audit Log", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": { "raw": "{{base_url}}/reportes/auditoria", "host": ["{{base_url}}"], "path": ["reportes", "auditoria"] } } }
+      ]
+    }
+  ]
+}

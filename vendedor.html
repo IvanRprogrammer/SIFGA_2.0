@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIFGA - Panel Vendedor</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <button class="menu-toggle" onclick="window.toggleMobileMenu()" aria-label="Abrir menú de navegación">☰</button>
+        <div class="sidebar-overlay" onclick="window.toggleMobileMenu()" aria-hidden="true"></div>
+
+        <div class="dashboard-container">
+            <aside class="sidebar">
+                <div class="logo">
+                    <img src="assets/logo.png" alt="Logo SIFGA" class="sidebar-logo" onerror="this.style.display='none'">
+                    <h2>SIFGA</h2>
+                    <p>Vendedor</p>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#" id="nav-dashboard">Dashboard</a></li>
+                    <li><a href="#" id="nav-clientesActivos">Clientes Activos</a></li>
+                    <li><a href="#" id="nav-proponerCliente">Proponer Cliente</a></li>
+                    <li><a href="#" id="nav-tomarLectura">Tomar Lectura</a></li>
+                    <li><a href="#" id="nav-consultaFacturas">Consulta de Facturas</a></li>
+                    <li><a href="#" id="nav-anticiposRecaudos">Anticipos y Recaudos</a></li>
+                    <li><a href="#" id="nav-rutas">Rutas</a></li>
+                </ul>
+            </aside>
+
+            <main class="main-content">
+                <div class="top-bar">
+                    <h2 id="sectionTitle">Dashboard Vendedor</h2>
+                    <div class="user-info">
+                        <span class="role-badge">Vendedor</span>
+                        <span id="userNameDisplay"></span>
+                        <button class="logout-btn" onclick="window.logout()">Cerrar Sesión</button>
+                    </div>
+                </div>
+
+                <!-- Dashboard -->
+                <div id="dashboard" class="section-content">
+                    <div class="stats-grid">
+                        <div class="stat-card"><h3>Facturas Generadas (Mes)</h3><div class="stat-value" id="totalFacturas">0</div></div>
+                        <div class="stat-card"><h3>Propuestas Pendientes</h3><div class="stat-value" id="totalPropuestasV">0</div></div>
+                        <div class="stat-card"><h3>Total Recaudado</h3><div class="stat-value" id="totalRecaudosV">$0</div></div>
+                    </div>
+                </div>
+
+                <!-- Clientes Activos -->
+                <div id="clientesActivos" class="section-content hide">
+                    <h3>Gestión de Clientes Activos</h3>
+                    <div class="table-container">
+                        <table id="tablaClientesActivos" class="data-table">
+                            <thead>
+                                <tr><th>ID</th><th>Nombre</th><th>CC/NIT</th><th>Contador</th><th>Ciudad</th><th>Teléfono</th><th>Email</th><th>Permiso</th><th>Acción</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div id="formModificarCliente" class="form-card hide">
+                        <h4>Modificar Datos del Cliente</h4>
+                        <input type="hidden" id="modificarClienteId">
+                        <div class="form-row">
+                            <div class="form-group"><label for="modificarNombre">Nombre Completo</label><input type="text" id="modificarNombre"></div>
+                            <div class="form-group"><label for="modificarCedula">CC / NIT</label><input type="text" id="modificarCedula"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="modificarDireccion">Dirección</label><input type="text" id="modificarDireccion"></div>
+                            <div class="form-group"><label for="modificarContador">Número Contador</label><input type="text" id="modificarContador"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="modificarCiudad">Ciudad</label>
+                                <select id="modificarCiudad">
+                                    <option value="">Seleccione</option>
+                                    <option value="Bogota">Bogotá</option>
+                                    <option value="Medellin">Medellín</option>
+                                    <option value="Cali">Cali</option>
+                                </select>
+                            </div>
+                            <div class="form-group"><label for="modificarRegion">Región</label>
+                                <select id="modificarRegion">
+                                    <option value="">Seleccione</option>
+                                    <option value="Cundinamarca">Cundinamarca</option>
+                                    <option value="Antioquia">Antioquia</option>
+                                    <option value="Valle">Valle</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="modificarEstrato">Estrato Social</label>
+                                <select id="modificarEstrato">
+                                    <option value="1">Estrato 1</option>
+                                    <option value="2">Estrato 2</option>
+                                    <option value="3">Estrato 3</option>
+                                    <option value="4">Estrato 4</option>
+                                    <option value="5">Estrato 5</option>
+                                    <option value="6">Estrato 6</option>
+                                </select>
+                            </div>
+                            <div class="form-group"><label for="modificarEmail">Email</label><input type="email" id="modificarEmail"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="modificarTelefono">Teléfono</label><input type="text" id="modificarTelefono"></div>
+                        </div>
+                        <div class="form-row">
+                            <button class="btn-primary" onclick="window.guardarModificacionCliente()">Guardar Cambios</button>
+                            <button class="btn-danger" onclick="window.cancelarModificacion()">Cancelar</button>
+                        </div>
+                        <div id="mensajeModificacion" class="alert-success hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Proponer Cliente -->
+                <div id="proponerCliente" class="section-content hide">
+                    <h3>Registrar Propuesta de Nuevo Cliente</h3>
+                    <div class="form-card">
+                        <div class="form-row">
+                            <div class="form-group"><label for="propNombre">Nombre Completo</label><input type="text" id="propNombre"></div>
+                            <div class="form-group"><label for="propCedula">CC / NIT</label><input type="text" id="propCedula"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="propDireccion">Dirección</label><input type="text" id="propDireccion"></div>
+                            <div class="form-group"><label for="propContador">Número Contador</label><input type="text" id="propContador"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="propCiudad">Ciudad</label>
+                                <select id="propCiudad">
+                                    <option value="">Seleccione</option>
+                                    <option value="Bogota">Bogotá</option>
+                                    <option value="Medellin">Medellín</option>
+                                    <option value="Cali">Cali</option>
+                                </select>
+                            </div>
+                            <div class="form-group"><label for="propRegion">Región</label>
+                                <select id="propRegion">
+                                    <option value="">Seleccione</option>
+                                    <option value="Cundinamarca">Cundinamarca</option>
+                                    <option value="Antioquia">Antioquia</option>
+                                    <option value="Valle">Valle</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="propEstrato">Estrato Social</label>
+                                <select id="propEstrato">
+                                    <option value="1">Estrato 1</option>
+                                    <option value="2">Estrato 2</option>
+                                    <option value="3">Estrato 3</option>
+                                    <option value="4">Estrato 4</option>
+                                    <option value="5">Estrato 5</option>
+                                    <option value="6">Estrato 6</option>
+                                </select>
+                            </div>
+                            <div class="form-group"><label for="propEmail">Email</label><input type="email" id="propEmail"></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="propTelefono">Teléfono</label><input type="text" id="propTelefono"></div>
+                        </div>
+                        <button class="btn-primary" onclick="window.enviarPropuesta()">Enviar Propuesta</button>
+                        <div id="mensajePropuesta" class="alert-success hidden"></div>
+                    </div>
+                    <div class="table-container">
+                        <h4>Mis Propuestas</h4>
+                        <table id="tablaMisPropuestas" class="data-table">
+                            <thead>
+                                <tr><th>ID</th><th>Nombre</th><th>CC/NIT</th><th>Ciudad</th><th>Contador</th><th>Estado</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Tomar Lectura -->
+                <div id="tomarLectura" class="section-content hide">
+                    <h3>Tomar Lectura y Generar Factura</h3>
+                    <div class="form-card">
+                        <div class="form-group"><label for="selectCliente">Cliente</label><select id="selectCliente"></select></div>
+                        <div class="form-group"><label for="lecturaActual">Lectura Actual (m3)</label><input type="number" id="lecturaActual" placeholder="Ingrese la lectura del medidor"></div>
+                        <div class="form-group"><label for="fechaLectura">Fecha de Toma de Lectura</label><input type="date" id="fechaLectura"></div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="fechaInicioPeriodo">Fecha Inicio Periodo</label><input type="date" id="fechaInicioPeriodo"></div>
+                            <div class="form-group"><label for="fechaFinPeriodo">Fecha Fin Periodo</label><input type="date" id="fechaFinPeriodo"></div>
+                        </div>
+                        <button class="btn-primary" onclick="window.generarFactura()">Generar Factura</button>
+                    </div>
+                </div>
+
+                <!-- Consulta de Facturas -->
+                <div id="consultaFacturas" class="section-content hide">
+                    <h3>Consulta de Facturas Guardadas</h3>
+                    <div class="form-card">
+                        <div class="form-row">
+                            <div class="form-group"><label for="buscarFacturaPorCC">Buscar por CC / NIT</label><input type="text" id="buscarFacturaPorCC" placeholder="Ingrese la cédula o NIT del cliente"></div>
+                            <div class="form-group"><label for="buscarFacturaGeneral">Buscar por Factura, Cliente o Estado</label><input type="text" id="buscarFacturaGeneral" placeholder="N° Factura, cliente o estado..."></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group"><label for="filtroEstadoFactura">Filtrar por Estado</label>
+                                <select id="filtroEstadoFactura">
+                                    <option value="">Todos</option>
+                                    <option value="Pendiente">Pendiente</option>
+                                    <option value="Pagada">Pagada</option>
+                                    <option value="En Mora">En Mora</option>
+                                </select>
+                            </div>
+                            <div class="form-group form-buttons-group">
+                                <button class="btn-primary" onclick="window.cargarLecturasGuardadas()">Aplicar Filtros</button>
+                                <button class="btn-primary btn-secondary" onclick="window.limpiarFiltrosFacturas()">Limpiar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-container">
+                        <table id="tablaLecturasGuardadas" class="data-table lectura-table">
+                            <thead>
+                                <tr><th>Factura</th><th>Cliente</th><th>Lectura</th><th>Periodo</th><th>Fecha Lectura</th><th>Total</th><th>Vencimiento</th><th>Estado</th><th>Acción</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Anticipos y Recaudos -->
+                <div id="anticiposRecaudos" class="section-content hide">
+                    <h3>Anticipos y Recaudos</h3>
+                    <div class="form-card">
+                        <div class="form-group"><label for="buscadorRecaudos">Buscar por Cliente</label><input type="text" id="buscadorRecaudos" placeholder="Escriba el nombre del cliente..."></div>
+                    </div>
+                    <div class="table-container">
+                        <table id="tablaAnticiposRecaudos" class="data-table anticipos-table">
+                            <thead>
+                                <tr><th>Cliente</th><th>Monto</th><th>Fecha</th><th>Tipo</th><th>Referencia</th><th>Estado</th></tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="alert-info info-message">
+                        <strong>⚠️ Información:</strong> Si detecta un error en un recaudo, por favor reporte al Administrador para su corrección.
+                    </div>
+                </div>
+
+                <!-- Contenedor global para resultado de factura -->
+                <div id="resultadoFactura" class="factura-result-container hide"></div>
+
+                <!-- Rutas -->
+                <div id="rutas" class="section-content hide">
+                    <h3>Visualización de Rutas de Facturación</h3>
+                    <div class="form-card">
+                        <div class="buscador-cliente-mapa">
+                            <div class="form-group flex-group"><label for="selectClienteMapaV">Buscar cliente</label><select id="selectClienteMapaV"></select></div>
+                            <button class="btn-primary" onclick="window.buscarClienteEnMapaV()">Ubicar en Mapa</button>
+                        </div>
+                    </div>
+                    <div id="mapaRutasV" class="map-container"></div>
+                </div>
+            </main>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <p>Creado by Programmer Ivan Rodríguez - Frontend - Derechos Reservados © 2026 SIFGA</p>
+            </div>
+        </footer>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+    <script type="module">
+        import { toggleMobileMenu, logout } from './js/utils.js';
+        import { 
+            inicializarVendedor, showSection, cargarLecturasGuardadas, buscarFacturasPorCC, 
+            generarFactura, enviarPropuesta, guardarModificacionCliente, cancelarModificacion, 
+            buscarClienteEnMapaV, cargarAnticiposRecaudos, filtrarFacturasGeneral, limpiarFiltrosFacturas
+        } from './js/roles/vendedor.js';
+        
+        window.toggleMobileMenu = toggleMobileMenu;
+        window.logout = logout;
+        window.showSection = showSection;
+        window.cargarLecturasGuardadas = cargarLecturasGuardadas;
+        window.buscarFacturasPorCC = buscarFacturasPorCC;
+        window.generarFactura = generarFactura;
+        window.enviarPropuesta = enviarPropuesta;
+        window.guardarModificacionCliente = guardarModificacionCliente;
+        window.cancelarModificacion = cancelarModificacion;
+        window.buscarClienteEnMapaV = buscarClienteEnMapaV;
+        window.cargarAnticiposRecaudos = cargarAnticiposRecaudos;
+        window.filtrarFacturasGeneral = filtrarFacturasGeneral;
+        window.limpiarFiltrosFacturas = limpiarFiltrosFacturas;
+        
+        document.getElementById('nav-dashboard')?.addEventListener('click', (e) => { e.preventDefault(); showSection('dashboard'); });
+        document.getElementById('nav-clientesActivos')?.addEventListener('click', (e) => { e.preventDefault(); showSection('clientesActivos'); });
+        document.getElementById('nav-proponerCliente')?.addEventListener('click', (e) => { e.preventDefault(); showSection('proponerCliente'); });
+        document.getElementById('nav-tomarLectura')?.addEventListener('click', (e) => { e.preventDefault(); showSection('tomarLectura'); });
+        document.getElementById('nav-consultaFacturas')?.addEventListener('click', (e) => { e.preventDefault(); showSection('consultaFacturas'); });
+        document.getElementById('nav-anticiposRecaudos')?.addEventListener('click', (e) => { e.preventDefault(); showSection('anticiposRecaudos'); });
+        document.getElementById('nav-rutas')?.addEventListener('click', (e) => { e.preventDefault(); showSection('rutas'); });
+        
+        document.getElementById('buscadorRecaudos')?.addEventListener('keyup', function() { cargarAnticiposRecaudos(this.value); });
+        document.getElementById('buscarFacturaGeneral')?.addEventListener('keyup', function() { filtrarFacturasGeneral(); });
+        document.getElementById('filtroEstadoFactura')?.addEventListener('change', function() { filtrarFacturasGeneral(); });
+        
+        inicializarVendedor();
+    </script>
+</body>
+</html>

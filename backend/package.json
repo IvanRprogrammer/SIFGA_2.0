@@ -1,0 +1,43 @@
+{
+  "name": "sifga-backend",
+  "packageManager": "pnpm@11.5.1",
+  "version": "2.0.0",
+  "description": "SIFGA - Sistema Integrado de Facturación y Gestión de Agua - Backend API",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "jest --coverage",
+    "db:seed": "node prisma/seed.js",
+    "db:push": "prisma db push",
+    "db:pull": "prisma db pull",
+    "db:studio": "prisma studio",
+    "sync:supabase": "node scripts/syncSupabase.js",
+    "sync:watch": "node scripts/syncSupabase.js"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/client": "5.22.0",
+    "@supabase/supabase-js": "^2.108.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.0",
+    "express-rate-limit": "^7.4.0",
+    "express-validator": "^7.2.0",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "mysql2": "^3.11.0",
+    "node-cron": "^4.2.1",
+    "nodemailer": "^6.9.15",
+    "uuid": "^14.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.4",
+    "prisma": "5.22.0"
+  }
+}

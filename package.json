@@ -1,0 +1,10 @@
+{
+  "name": "sifga-2.0",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --parallel -r run dev",
+    "build": "pnpm -r run build",
+    "start": "pnpm --parallel -r run start"
+  }
+}
