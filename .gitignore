@@ -1,1 +1,44 @@
-node_modules
+# Dependencias
+node_modules/
+
+# Logs
+logs
+*.log
+
+# Variables de entorno
+.env
+.env.local
+.env.development
+.env.production
+
+# Prisma
+prisma/dev.db
+
+# Build Frontend
+frontend/dist
+
+# Cobertura
+coverage/
+
+# Vite
+.vite
+
+# IDE
+.vscode/
+.idea/
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Mac
+.DS_Store
+
+# Cache
+.cache
+
+# Render
+.render
+
+# PNPM
+.pnpm-store
