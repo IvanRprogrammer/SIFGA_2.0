@@ -443,4 +443,123 @@ Backend (Node.js + Express)
           ▼
  Supabase (Demo Académica)
 ```
+
 ##estructura final de SIFGA 2.0
+
+SIFGA 2.0/
+├── .gitignore
+├── package.json ← workspace root (pnpm dev/build/start)
+├── pnpm-workspace.yaml
+├── PLAN_IMPLEMENTACION.md
+│
+├── index.html ← legacy entry point
+├── administrador.html
+├── vendedor.html
+├── cliente.html
+│
+├── assets/
+│ └── logo.png
+│
+├── css/
+│ └── styles.css
+│
+├── js/ ← legacy JS (API-first + localStorage fallback)
+│ ├── api.js, auth.js, data.js, main.js, utils.js
+│ ├── facturacion.js, impresion.js, recaudos.js, rutas.js, usuarios.js
+│ ├── modules/
+│ │ ├── permisos.js, propuestas.js, reportes.js, tarifas.js
+│ └── roles/
+│ ├── admin.js, cliente.js, vendedor.js
+│
+├── postman/
+│ └── sifga-api-postman.json
+│
+├── backend/ ← Express API (pnpm start → puerto 3000)
+│ ├── .env
+│ ├── package.json
+│ ├── jest.config.js ← NUEVO
+│ ├── test_runner.js
+│ │
+│ ├── database/
+│ │ └── schema.sql
+│ ├── prisma/
+│ │ ├── schema.prisma
+│ │ └── seed.js
+│ ├── scripts/
+│ │ └── (check_db, init_db, run_schema, syncSupabase, test_api)
+│ │
+│ ├── src/
+│ │ ├── app.js ← entry point
+│ │ ├── config/
+│ │ │ ├── constants.js, database.js, index.js, prisma.js, supabase.js
+│ │ ├── controllers/
+│ │ │ ├── authController.js ← login, register, forgot/reset, profile, changePassword
+│ │ │ ├── clienteController.js
+│ │ │ ├── configController.js
+│ │ │ ├── facturaController.js
+│ │ │ ├── lecturaController.js
+│ │ │ ├── pagoController.js
+│ │ │ ├── reporteController.js
+│ │ │ └── userController.js
+│ │ ├── middleware/
+│ │ │ ├── auth.js, errorHandler.js, validator.js
+│ │ ├── models/
+│ │ │ └── index.js ← NUEVO (Prisma re-exports)
+│ │ ├── routes/
+│ │ │ ├── index.js
+│ │ │ └── (auth, user, cliente, lectura, factura, pago, config, reporte)Routes.js
+│ │ └── utils/
+│ │ ├── auditoria.js
+│ │ ├── helpers.js
+│ │ └── mailer.js ← NUEVO (Nodemailer)
+│ │
+│ └── tests/ ← NUEVO (Jest)
+│ ├── auth.test.js ← 12 tests
+│ ├── cliente.test.js ← 12 tests
+│ ├── factura.test.js ← 10 tests
+│ ├── lectura.test.js ← 9 tests
+│ ├── pago.test.js ← 9 tests
+│ ├── coverage/
+│ │ ├── reporte-tecnico.md ← NUEVO
+│ │ └── lcov-report/
+│ └── **mocks**/
+│ ├── database.js, auditoria.js, helpers.js
+│
+└── frontend/ ← React + Vite (pnpm build → dist/)
+├── .env
+├── package.json
+├── vite.config.js
+├── index.html
+│
+├── public/
+│ └── logo.png ← NUEVO
+│
+└── src/
+├── main.jsx
+├── App.jsx
+├── assets/
+│ └── styles.css
+├── components/
+│ ├── common/
+│ │ ├── ConfirmDialog.jsx, DataTable.jsx, LoadingSpinner.jsx
+│ │ ├── ProtectedRoute.jsx, StatusBadge.jsx
+│ └── layout/
+│ ├── DashboardLayout.jsx, Sidebar.jsx, TopBar.jsx
+├── contexts/
+│ └── AuthContext.jsx
+├── hooks/
+│ ├── useApi.js ← NUEVO
+│ └── useLocalStorage.js ← NUEVO
+├── pages/
+│ ├── auth/ → LoginPage.jsx
+│ ├── admin/ → 9 páginas (Dashboard, Users, Clientes, Propuestas, Config, Recaudos, Reportes, Auditoría)
+│ ├── vendor/ → 8 páginas (Dashboard, Clientes, Proponer, Lectura, Facturación, Consulta, Recaudos)
+│ └── client/ → 6 páginas (Cuenta, Facturas, Pagar, Consumo, Pagos)
+├── services/
+│ ├── api.js, authService.js, clienteService.js, configService.js
+│ ├── facturaService.js, lecturaService.js, pagoService.js
+│ ├── reporteService.js, userService.js
+└── utils/
+├── constants.js ← NUEVO
+├── formatters.js ← NUEVO
+└── validators.js ← NUEVO
