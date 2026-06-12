@@ -1,189 +1,446 @@
 # Plan de Implementación SIFGA 2.0 - Full Stack
 
-## Fase 1: Preparación del Entorno (Día 1)
+## Estado Actual del Proyecto
+
+### Proyecto Implementado
+
+SIFGA 2.0 se encuentra actualmente en una fase avanzada de desarrollo.
+
+Componentes implementados:
+
+- Backend Node.js + Express
+- Frontend React + Vite
+- Prisma ORM
+- MySQL
+- JWT Authentication
+- Bcrypt
+- Jest (59 pruebas)
+- Arquitectura modular por roles
+- API REST funcional
+- Postman Collection
+- Recuperación de contraseña
+- Sistema de facturación completo
+
+---
+
+## Fase 1: Preparación del Entorno (Completada)
 
 ### 1.1 Prerrequisitos
-- Node.js 18+ instalado
-- MySQL 8 instalado y en ejecución
-- Git configurado
-- VS Code o editor preferido
+
+Verificar herramientas:
+
+```bash
+node -v
+pnpm -v
+git --version
+```
+
+Versiones recomendadas:
+
+```text
+Node.js 18+
+PNPM 10+
+Git 2+
+MySQL 8+
+```
 
 ### 1.2 Base de Datos
 
-Puedes usar **MySQL Workbench**, **DBeaver**, **HeidiSQL** o cualquier cliente MySQL. Solo abre `backend/database/schema.sql` y ejecútalo completo (Create Database + tablas + datos iniciales).
+Verificar conexión:
 
-O por consola:
 ```bash
-mysql -u root -p < backend/database/schema.sql
+mysql -u root -p
+```
+
+Seleccionar base de datos:
+
+```sql
+USE sifga_db;
+SHOW TABLES;
 ```
 
 ### 1.3 Backend
+
 ```bash
 cd backend
+
 pnpm install
-# Copiar .env.example a .env y configurar credenciales MySQL
-pnpm dev               # Inicia en http://localhost:3000
+
+pnpm prisma validate
+
+pnpm prisma generate
+
+pnpm run dev
+```
+
+Resultado esperado:
+
+```text
+http://localhost:3000
 ```
 
 ### 1.4 Frontend
+
 ```bash
 cd frontend
+
 pnpm install
-pnpm dev               # Inicia en http://localhost:5173
+
+pnpm run dev
 ```
 
-### 1.5 Usar pnpm globalmente
-Este proyecto usa `pnpm` en vez de `npm`. Si no lo tienes:
+Resultado esperado:
+
+```text
+http://localhost:5173
+```
+
+---
+
+## Fase 2: Configuración de Infraestructura (Completada)
+
+### 2.1 Validación del Entorno
+
+Backend:
+
 ```bash
-# Windows (PowerShell):
-iwr https://get.pnpm.io/install.ps1 -useb | iex
-
-# Con npm si lo tienes:
-npm install -g pnpm
+pnpm prisma validate
+pnpm prisma generate
 ```
 
-### 1.6 Verificar
-- Health check: GET http://localhost:3000/health
-- Frontend: http://localhost:5173
-- Login: admin@sifga.com / admin123
+Frontend:
 
----
-
-## Fase 2: Migración de Datos (Día 2)
-
-### 2.1 Scripts de Migración
-Crear script en `backend/database/migrate.js` que:
-1. Lee datos del prototipo desde localStorage (vía archivo JSON exportado)
-2. Transforma al nuevo esquema relacional
-3. Inserta en MySQL con transacciones
-
-### 2.2 Validación
-- Verificar integridad referencial
-- Comparar totales de registros
-- Probar login con credenciales migradas
-
----
-
-## Fase 3: Pruebas de API (Día 2-3)
-
-### 3.1 Postman Collection
-Importar `postman/sifga-api-postman.json` en Postman
-
-### 3.2 Flujo de Pruebas
-1. Login Admin → Obtener token
-2. CRUD Usuarios
-3. CRUD Clientes + Aprobación
-4. Registrar Lectura + Generar Factura
-5. Registrar Pago
-6. Reportes y Dashboard
-7. Auditoría
-
----
-
-## Fase 4: Despliegue (Día 3-4)
-
-### 4.1 Producción Backend
 ```bash
-# Usar PM2 para procesos persistente
-pnpm add --global pm2
-pm2 start src/app.js --name sifga-api
-pm2 save
-pm2 startup
+pnpm run build
 ```
 
-### 4.2 Producción Frontend
+### 2.2 Validación Base de Datos
+
+```bash
+pnpm prisma studio
+```
+
+Verificar:
+
+- usuarios
+- clientes
+- lecturas
+- facturas
+- pagos
+- auditoria
+
+### 2.3 Variables de Entorno
+
+Archivo:
+
+```text
+backend/.env
+```
+
+Variables obligatorias:
+
+```env
+DATABASE_URL=
+JWT_SECRET=
+FRONTEND_URL=
+```
+
+---
+
+## Fase 3: Adaptación de Supabase para SIFGA 2.0
+
+### Objetivo
+
+Implementar Supabase como repositorio secundario de demostración académica.
+
+### Importante
+
+```text
+MySQL continúa siendo la base de datos principal.
+
+Supabase NO reemplaza MySQL.
+
+Supabase se utiliza únicamente para cumplir
+los requerimientos académicos del proyecto.
+```
+
+### 3.1 Proyecto Supabase
+
+Proyecto creado:
+
+```text
+sifga_2.0
+```
+
+Estado:
+
+```text
+ACTIVE
+```
+
+### 3.2 Obtener API Keys
+
+Ruta:
+
+```text
+Settings
+└── API
+```
+
+Copiar:
+
+```env
+SUPABASE_URL=
+SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+```
+
+### 3.3 Integración Backend
+
+Instalar SDK:
+
+```bash
+cd backend
+
+pnpm add @supabase/supabase-js
+```
+
+Crear:
+
+```text
+backend/scripts/syncSupabase.js
+```
+
+Función:
+
+```text
+Sincronizar MySQL hacia Supabase
+para demostración académica.
+```
+
+### 3.4 Sincronización Automática
+
+Arquitectura:
+
+```text
+MySQL
+  │
+  ▼
+Prisma ORM
+  │
+  ▼
+syncSupabase.js
+  │
+  ▼
+Supabase
+```
+
+Tablas sincronizadas:
+
+- usuarios
+- clientes
+- facturas
+- pagos
+
+### 3.5 Ejecutar Sincronización
+
+```bash
+pnpm run sync:supabase
+```
+
+Resultado esperado:
+
+```text
+Usuarios sincronizados
+Clientes sincronizados
+Facturas sincronizadas
+Pagos sincronizados
+```
+
+---
+
+## Fase 4: Control de Versiones con GitHub
+
+### 4.1 Inicializar Git
+
+```bash
+git init
+```
+
+### 4.2 Crear .gitignore
+
+Excluir:
+
+```text
+node_modules
+.env
+dist
+coverage
+.vscode
+```
+
+### 4.3 Crear Repositorio
+
+Nombre:
+
+```text
+sifga-2.0
+```
+
+### 4.4 Conectar Repositorio
+
+```bash
+git remote add origin https://github.com/USUARIO/sifga-2.0.git
+```
+
+### 4.5 Primer Commit
+
+```bash
+git add .
+
+git commit -m "Initial commit SIFGA 2.0"
+```
+
+### 4.6 Publicar
+
+```bash
+git branch -M main
+
+git push -u origin main
+```
+
+---
+
+## Fase 5: Despliegue Frontend con Vercel
+
+### Objetivo
+
+Publicar la interfaz React de SIFGA 2.0.
+
+### 5.1 Build Local
+
 ```bash
 cd frontend
-pnpm build
-# Servir dist/ con nginx o similar
+
+pnpm install
+
+pnpm run build
 ```
 
-### 4.3 Variables de Entorno Producción
-```
-NODE_ENV=production
-DB_PASSWORD=<password_segura>
-JWT_SECRET=<secret_aleatorio_64_chars>
-FRONTEND_URL=https://sifga.midominio.com
+Resultado esperado:
+
+```text
+dist/
 ```
 
----
+### 5.2 Configuración Vercel
 
-## Fase 5: Mejoras Futuras
-
-### 5.1 Pendientes
-- [ ] Módulo de mapas (Leaflet) - Ruteo de vendedores
-- [ ] Impresión de facturas desde React
-- [ ] Envío de correos reales (recuperación contraseña)
-- [ ] Reportes en PDF/Excel
-- [ ] Dashboard con gráficos (Chart.js o Recharts)
-- [ ] Modo oscuro
-- [ ] Paginación en tablas grandes
-- [ ] Filtros avanzados
-- [ ] Exportar datos
-
-### 5.2 Arquitectura Escalable
-- Dockerizar aplicación (docker-compose)
-- Implementar caché con Redis
-- Cola de tareas (Bull/BullMQ) para facturación masiva
-- Tests unitarios y de integración (Jest)
-- Documentación API con Swagger/OpenAPI
-
----
-
-## Estructura Final del Proyecto
-
+```text
+Framework Preset: Vite
+Root Directory: frontend
+Build Command: pnpm run build
+Output Directory: dist
 ```
-SIFGA 2.0/
-├── backend/
-│   ├── src/
-│   │   ├── config/          # Config DB, constantes
-│   │   ├── controllers/     # Lógica de negocio
-│   │   ├── middleware/       # Auth, validación, errores
-│   │   ├── routes/          # Definición de rutas
-│   │   ├── utils/           # Helpers, auditoría
-│   │   └── app.js           # Punto de entrada Express
-│   ├── database/
-│   │   └── schema.sql       # DDL completo + datos iniciales
-│   ├── package.json
-│   └── .env
-├── frontend/
-│   ├── src/
-│   │   ├── assets/          # CSS, imágenes
-│   │   ├── components/      # Componentes reutilizables
-│   │   │   ├── common/      # DataTable, Badge, Spinner, etc.
-│   │   │   └── layout/      # Sidebar, TopBar, DashboardLayout
-│   │   ├── contexts/        # AuthContext
-│   │   ├── pages/           # Páginas por rol
-│   │   │   ├── admin/       # 8 páginas de administración
-│   │   │   ├── vendor/      # 7 páginas de vendedor
-│   │   │   ├── client/      # 5 páginas de cliente
-│   │   │   └── auth/        # Login
-│   │   ├── services/        # Capa API (Axios)
-│   │   ├── App.jsx          # Router principal
-│   │   └── main.jsx         # Entry point Vite
-│   ├── index.html
-│   ├── vite.config.js       # Proxy API
-│   └── package.json
-├── postman/
-│   └── sifga-api-postman.json
-└── PLAN_IMPLEMENTACION.md
+
+### 5.3 Variables de Entorno
+
+```env
+VITE_API_URL=http://localhost:3000
+
+VITE_SUPABASE_URL=
+
+VITE_SUPABASE_ANON_KEY=
+```
+
+### 5.4 Deploy
+
+Resultado esperado:
+
+```text
+https://sifga.vercel.app
 ```
 
 ---
 
-## Mapeo Prototipo → Full Stack
+## Fase 6: Validación Funcional
 
-| Funcionalidad | Prototipo (localStorage) | Full Stack (MySQL + API) |
-|--------------|------------------------|------------------------|
-| Almacenamiento | localStorage (sifga_db) | MySQL 8 (12 tablas) |
-| Autenticación | Comparación directa | JWT + Bcrypt |
-| Roles | String en usuario | Tabla roles + FK |
-| Clientes | Array en data.clientes | Tabla clientes |
-| Propuestas | Array en data.propuestasClientes | Tabla propuestas_clientes + workflow |
-| Lecturas | Array en data.lecturasGuardadas | Tabla lecturas |
-| Facturas | Array en data.facturas | Tabla facturas (con cálculos server-side) |
-| Pagos | Array en data.recaudos | Tabla pagos + actualización automática |
-| Config | Objeto en data.config | Tabla configuracion + tarifas_especiales |
-| Permisos | Array en data.permisosVendedores | Tabla permisos_vendedores |
-| Auditoría | No existe | Tabla auditoria (automática) |
-| Reportes | Cálculo en JS cliente | Vistas SQL + endpoints |
+### Autenticación
+
+- [ ] Login Administrador
+- [ ] Login Vendedor
+- [ ] Login Cliente
+
+### Clientes
+
+- [ ] Crear cliente
+- [ ] Aprobar cliente
+- [ ] Consultar cliente
+
+### Lecturas
+
+- [ ] Registrar lectura
+- [ ] Consultar historial
+
+### Facturación
+
+- [ ] Generar factura
+- [ ] Consultar factura
+
+### Pagos
+
+- [ ] Registrar pago
+- [ ] Actualizar estado factura
+
+### Supabase
+
+- [ ] Ejecutar sincronización
+- [ ] Verificar tablas
+- [ ] Verificar registros
+
+---
+
+## Fase 7: Mejoras Futuras
+
+### Funcionales
+
+- [ ] Reportes PDF
+- [ ] Exportación Excel
+- [ ] Dashboard Analítico
+- [ ] Notificaciones por Correo
+- [ ] Geolocalización
+- [ ] Módulo de Mapas
+
+### Técnicas
+
+- [ ] Docker
+- [ ] Swagger
+- [ ] Redis
+- [ ] CI/CD
+- [ ] Backups Automáticos
+
+---
+
+## Arquitectura Final
+
+```text
+Frontend (React + Vite)
+          │
+          ▼
+       Vercel
+          │
+          ▼
+Backend (Node.js + Express)
+          │
+          ▼
+      Prisma ORM
+          │
+          ▼
+ MySQL (Principal)
+          │
+          ▼
+ SyncSupabase.js
+          │
+          ▼
+ Supabase (Demo Académica)
+```
+##estructura final de SIFGA 2.0
